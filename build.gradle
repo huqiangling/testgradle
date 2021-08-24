@@ -1,0 +1,55 @@
+plugins {
+    id 'java'
+}
+
+group 'com.huqiang.gradle.test'
+version '1.0-SNAPSHOT'
+
+//申明为可执行程序
+apply plugin: 'application'
+sourceSets {
+    mainClassName = 'com.test.Test'
+}
+//生成可执行jar包
+jar{
+    manifestContentCharset 'utf-8'
+    metadataCharset 'utf-8'
+    manifest{
+        // manifest 文件声明主程序入口
+        attributes "Main-Class":"com.test.Test"
+    }
+    from {
+        configurations.compile.collect {
+            it.isDirectory() ? it : zipTree(it)
+        }
+    }
+}
+
+//添加发布插件，并指定发布私服地址
+apply plugin: 'maven-publish'
+sourceCompatibility = 1.8
+repositories {
+    //mavenCentral()
+    //配置阿里云mavnen 库
+    maven{
+        url 'http://maven.aliyun.com/nexus/content/groups/public/'
+    }
+}
+publishing{
+    publications {
+        myPublish(MavenPublication) {
+            from components.java//指定发布为jar包，如果要发布为war包则配置为：from components.war
+        }
+    }
+    repositories{
+        maven{
+            url = ""
+        }
+    }
+}
+
+//添加项目依赖
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
+

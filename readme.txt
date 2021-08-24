@@ -1,0 +1,1 @@
+我的第一个可执行的gradle构建的java程序，可以通过java -Xms20M -Xmx20M -XX:+PrintGC -jar testgradle-1.0-SNAPSHOT.jar来执行
